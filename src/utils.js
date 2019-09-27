@@ -33,18 +33,30 @@ function add(argv){
 }
 
 function list(){
-    const str=fs.readFileSync('notes.txt').toString()
-    const book=JSON.parse(str);
-    book.notes.forEach( (note, i) => {
-    console.log(`${i}: ${note.title}`);
-  })
+    try {
+        const str=fs.readFileSync('notes.txt').toString()
+        const book=JSON.parse(str);
+        book.notes.forEach( (note, i) => {
+        console.log(`${i}: ${note.title}`);
+      })
+      }
+      catch(error) {
+        console.error("There aren't any notes");
+      }
+    
 }
 function remove(argv){
-    const str=fs.readFileSync('notes.txt').toString()
-    const book=JSON.parse(str);
-    book.notes.splice(argv.index-1,1);
-    const str2 = JSON.stringify(book);
-    fs.writeFileSync("notes.txt",str2);
+    try {
+        const str=fs.readFileSync('notes.txt').toString()
+        const book=JSON.parse(str);
+        book.notes.splice(argv.index-1,1);
+        const str2 = JSON.stringify(book);
+        fs.writeFileSync("notes.txt",str2);
+      }
+      catch(error) {
+        console.error("There aren't any notes");
+      }
+    
     
     
 }
