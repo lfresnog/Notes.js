@@ -6,7 +6,7 @@ const book={
     notes:[]
 }
 
-function add(argv){
+const add = function add(argv){
     const note={
         title: argv.title,
         body: argv.body,
@@ -32,7 +32,7 @@ function add(argv){
    
 }
 
-function list(){
+const list = function list(){
     try {
         const str=fs.readFileSync('notes.txt').toString()
         const book=JSON.parse(str);
@@ -45,7 +45,7 @@ function list(){
       }
     
 }
-function remove(argv){
+const remove = function remove(argv){
     try {
         const str=fs.readFileSync('notes.txt').toString()
         const book=JSON.parse(str);
@@ -60,7 +60,7 @@ function remove(argv){
     
     
 }
-function read(argv){
+const read = function read(argv){
     const str=fs.readFileSync('notes.txt').toString()
     const book=JSON.parse(str);
     try {
