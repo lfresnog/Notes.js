@@ -1,5 +1,6 @@
 import uuidv1 from 'uuid/v1';
 import  fs from 'fs';
+import chalk from 'chalk'
 
 //Notes
 const book={
@@ -41,7 +42,7 @@ const list = function list(){
       })
       }
       catch(error) {
-        console.error("There aren't any notes");
+        console.error(chalk.red("\n There aren't any notes \n"));
       }
     
 }
@@ -49,25 +50,27 @@ const remove = function remove(argv){
     try {
         const str=fs.readFileSync('notes.txt').toString()
         const book=JSON.parse(str);
-        book.notes.splice(argv.index-1,1);
+        book.notes.splice(argv.index,1);
         const str2 = JSON.stringify(book);
         fs.writeFileSync("notes.txt",str2);
       }
       catch(error) {
-        console.error("There aren't any notes");
+        console.error(chalk.red("\n There aren't any notes \n"));
       }
     
     
     
 }
 const read = function read(argv){
-    const str=fs.readFileSync('notes.txt').toString()
-    const book=JSON.parse(str);
     try {
+        const str=fs.readFileSync('notes.txt').toString()
+        const book=JSON.parse(str);
+        console.log("\n"+ chalk.blue(book.notes[argv.index].title));
         console.log(book.notes[argv.index].body);
+        console.log("by "+chalk.yellow(book.notes[argv.index].author)+ "\n");
       }
       catch(error) {
-        console.error("That note doesn't exist");
+        console.error(chalk.red("\n That note doesn't exist \n"));
       }
 }
 
