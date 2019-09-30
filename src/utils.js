@@ -1,11 +1,9 @@
 import uuidv1 from 'uuid/v1';
-import  fs from 'fs';
-import chalk from 'chalk'
+import chalk from 'chalk';
+import {book} from './app';
 
 //Notes
-const book={
-    notes:[]
-}
+
 
 const add = function add(argv){
     const note={
@@ -14,29 +12,12 @@ const add = function add(argv){
         author: argv.author,
         id:uuidv1()
     }
-    const path = './notes.txt';
-    fs.access(path, fs.F_OK, (err) => {
-        if(err){
-        book.notes.push(note);
-        const str=JSON.stringify(book);
-        fs.writeFileSync("notes.txt",str);
-        }
-        else{
-            const str1=fs.readFileSync('notes.txt').toString()
-            const book=JSON.parse(str1);
-            book.notes.push(note);
-            const str2 = JSON.stringify(book);
-            fs.writeFileSync("notes.txt",str2);
-        }
-        
-    });
-   
+    book.notes.push(note);
+    console.log(chalk.green("Note added"));     
 }
 
 const list = function list(){
     try {
-        const str=fs.readFileSync('notes.txt').toString()
-        const book=JSON.parse(str);
         book.notes.forEach( (note, i) => {
         console.log(`${i}: ${note.title}`);
       })
@@ -48,11 +29,7 @@ const list = function list(){
 }
 const remove = function remove(argv){
     try {
-        const str=fs.readFileSync('notes.txt').toString()
-        const book=JSON.parse(str);
         book.notes.splice(argv.index,1);
-        const str2 = JSON.stringify(book);
-        fs.writeFileSync("notes.txt",str2);
       }
       catch(error) {
         console.error(chalk.red("\n There aren't any notes \n"));
@@ -63,8 +40,6 @@ const remove = function remove(argv){
 }
 const read = function read(argv){
     try {
-        const str=fs.readFileSync('notes.txt').toString()
-        const book=JSON.parse(str);
         console.log("\n"+ chalk.blue(book.notes[argv.index].title));
         console.log(book.notes[argv.index].body);
         console.log("by "+chalk.yellow(book.notes[argv.index].author)+ "\n");
