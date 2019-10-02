@@ -1,9 +1,10 @@
 import uuidv1 from 'uuid/v1';
 import chalk from 'chalk';
-import {book} from './app';
+import  fs from 'fs';
+import yargs from 'yargs';
 
 //Notes
-
+let book;
 
 const add = function add(argv){
     const note={
@@ -18,18 +19,28 @@ const add = function add(argv){
 
 const list = function list(){
     try {
-        book.notes.forEach( (note, i) => {
+      if (array.length == 0) {
+        console.error(chalk.red("\n Array empty \n"));
+    }else{
+      book.notes.forEach( (note, i) => {
         console.log(`${i}: ${note.title}`);
       })
+    } 
       }
       catch(error) {
         console.error(chalk.red("\n There aren't any notes \n"));
       }
     
 }
+
 const remove = function remove(argv){
     try {
-        book.notes.splice(argv.index,1);
+      if (array.length == 0) {
+        console.error(chalk.red("\n Array empty \n"));
+    }
+    else{
+      book.notes.splice(argv.index,1);
+    } 
       }
       catch(error) {
         console.error(chalk.red("\n There aren't any notes \n"));
@@ -38,6 +49,7 @@ const remove = function remove(argv){
     
     
 }
+
 const read = function read(argv){
     try {
         console.log("\n"+ chalk.blue(book.notes[argv.index].title));
@@ -49,4 +61,21 @@ const read = function read(argv){
       }
 }
 
-export{add,list,remove,read};
+const main = function main(){
+  const path = './notes.txt';
+fs.access(path, fs.F_OK, (err) => {
+  if (err) {
+    fs.writeFileSync("notes.txt","");
+  }
+  const data = fs.readFileSync("notes.txt").toString();
+  if(data !== ""){
+     book = JSON.parse(data);
+  }else{
+     book = {notes: []};
+  }
+  yargs.parse();
+  fs.writeFileSync("notes.txt", JSON.stringify(book));
+});
+}
+
+export{add,list,remove,read,main};
